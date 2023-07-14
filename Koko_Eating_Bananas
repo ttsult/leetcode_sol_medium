@@ -1,0 +1,18 @@
+class Solution:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        l, r = 1, max(piles)
+        res = r # initial functional solution
+
+        while l <= r: 
+            k = (l+r) // 2
+            hours = 0
+            for p in piles: # calculate how long it would take with current rate.
+                hours += math.ceil(p / k) # round up
+            
+            if hours <= h:
+                res = min(res, k) # acceptable rate, decrease the right bound to look for less
+                r = k - 1
+            else:
+                l = k + 1 # rate too small, find bigger rate
+        
+        return res 
