@@ -1,0 +1,29 @@
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        slow, fast = head, head
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        
+        second = slow.next 
+        prev = slow.next = None # split into two different lists
+        
+        # reverse second half
+        while second:
+            temp = second.next
+            second.next = prev
+            prev = second
+            second = temp
+        
+        # merge two halfs
+        first, second = head, prev # last node of second half of list is PREV
+
+        while second:
+            tmp1, tmp2 = first.next, second.next # store next links
+            first.next = second
+            second.next = tmp1
+            first, second = tmp1, tmp2
